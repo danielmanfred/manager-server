@@ -7,7 +7,7 @@ export class UserCredentialsDBAccess {
     private nedb: Nedb;
 
     constructor() {
-        this.nedb = new Nedb('database/UserCredentials.db');
+        this.nedb = new Nedb('database/user_credentials.db');
         this.nedb.loadDatabase();
     }
 

@@ -5,7 +5,7 @@ export class SessionTokenDBAccess {
     private nedb: Nedb;
 
     constructor() {
-        this.nedb = new Nedb('database/SessionToken.db');
+        this.nedb = new Nedb('database/session_token.db');
         this.nedb.loadDatabase();
     }
 
@@ -14,7 +14,7 @@ export class SessionTokenDBAccess {
             this.nedb.insert(token, err => {
                 if (err) {
                     reject(err);
-                } else {
+                } else { 
                     resolve();
                 }
             });
