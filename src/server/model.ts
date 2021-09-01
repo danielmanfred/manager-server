@@ -5,10 +5,6 @@ export interface Account {
     password: string
 }
 
-export interface Handler {
-    handleRequest(): void
-}
-
 export interface SessionToken {
     tokenId: string,
     username: string,

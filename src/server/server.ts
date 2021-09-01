@@ -1,6 +1,7 @@
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 import { Authorizer } from '../authorization/authorizer';
 import { LoginHander } from './login-handler';
+import { UserHandler } from './users-handler';
 import { Utils } from './utils';
 
 export class Server {
@@ -8,13 +9,15 @@ export class Server {
 
     public createServer() {
         createServer(
-            (req: IncomingMessage, res: ServerResponse) => {
-                console.log('got request from: ', req.url);
+            async (req: IncomingMessage, res: ServerResponse) => {
                 const basePath = Utils.getUrlBasePath(req.url);
 
                 switch (basePath) {
                     case 'login':
-                        new LoginHander(req, res, this.authorizer).handleRequest();
+                        await new LoginHander(req, res, this.authorizer).handleRequest();
+                        break;
+                    case 'users':
+                        await new UserHandler(req, res).handleRequest();
                         break;
                     default:
                         break;
