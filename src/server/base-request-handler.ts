@@ -1,6 +1,5 @@
 import { IncomingMessage, ServerResponse } from "http";
 import { HTTP_CODES } from "../shared/model";
-import { Account } from "./model";
 
 export abstract class BaseRequestHandler {
 
@@ -11,6 +10,16 @@ export abstract class BaseRequestHandler {
     protected async handleNotFound() {
         this.response.statusCode = HTTP_CODES.NOT_FOUND;
         this.response.write('not found');
+    }
+
+    protected respondJsonObject(code: HTTP_CODES, object: any) {
+        this.response.writeHead(code, { 'Content-Type': 'application/json' });
+        this.response.write(JSON.stringify(object));
+    }
+
+    protected respondBadRequest(message: string) {
+        this.response.statusCode = HTTP_CODES.BAD_REQUEST;
+        this.response.write(message);
     }
 
     protected async getRequestBody(): Promise<any> {
