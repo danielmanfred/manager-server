@@ -1,1 +1,1 @@
-# manager-server
+# Manager Server App Sample

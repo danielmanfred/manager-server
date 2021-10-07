@@ -17,7 +17,7 @@ export class Server {
                         await new LoginHander(req, res, this.authorizer).handleRequest();
                         break;
                     case 'users':
-                        await new UserHandler(req, res).handleRequest();
+                        await new UserHandler(req, res, this.authorizer).handleRequest();
                         break;
                     default:
                         break;
