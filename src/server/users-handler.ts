@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse } from "http";
-import { HTTP_CODES, HTTP_METHODS } from "../shared/model";
+import { AccessRight, HTTP_CODES, HTTP_METHODS } from "../shared/model";
 import { UsersDBAccess } from "../user/users-db-access";
 import { BaseRequestHandler } from "./base-request-handler";
 import { TokenValidator } from "./model";
@@ -41,4 +41,14 @@ export class UserHandler extends BaseRequestHandler {
         }
     }
 
+    public async operationAuthorized(operation: AccessRight): Promise<boolean> {
+        const tokenId = this.request.headers.authorization;
+
+        if (tokenId) {
+            const tokenRights = await this.tokenValidator.validatorToken(tokenId);
+            return tokenRights.accessRights.includes(operation);
+        } else {
+            return false;
+        }
+    }
 }

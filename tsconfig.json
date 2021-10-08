@@ -6,7 +6,7 @@
         ],
         "strictNullChecks": true,
         "strict": true,
-        "outDir": "dist",
-        "rootDir": "src"
+        "outDir": "dist",        
+        "rootDirs": ["src", "test"]
     }
 }
