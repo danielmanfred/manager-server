@@ -7,5 +7,5 @@ Content-Type: application/json
 }
 ###
 
-GET http://localhost:8080/users?id=123abd
-Authorization: abcdefghijlkmnopqrstuvxwyz
+GET http://localhost:8080/users?id=123abc
+Authorization: zewlea87sy

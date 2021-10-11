@@ -25,23 +25,28 @@ export class UserHandler extends BaseRequestHandler {
     }
 
     private async handleGet() {
-        const parseUrl = Utils.getUrlParameters(this.request.url);
-        if (parseUrl) {
-            const userId = parseUrl.query.id;
-            if (userId) {
-                const user = await this.usersDBAccess.getUserById(userId as string);
-                if (user) {
-                    this.respondJsonObject(HTTP_CODES.OK, user);
+        const operationAuthorized = await this.operationAuthorized(AccessRight.READ);
+        if (operationAuthorized) {
+            const parseUrl = Utils.getUrlParameters(this.request.url);
+            if (parseUrl) {
+                const userId = parseUrl.query.id;
+                if (userId) {
+                    const user = await this.usersDBAccess.getUserById(userId as string);
+                    if (user) {
+                        this.respondJsonObject(HTTP_CODES.OK, user);
+                    } else {
+                        this.handleNotFound();
+                    }
                 } else {
-                    this.handleNotFound();
+                    this.respondBadRequest('userId not present in request');
                 }
-            } else {
-                this.respondBadRequest('userId not present in request');
             }
+        } else {
+            this.respondUnauthorized('missing or invalid authentication');
         }
     }
 
-    public async operationAuthorized(operation: AccessRight): Promise<boolean> {
+    private async operationAuthorized(operation: AccessRight): Promise<boolean> {
         const tokenId = this.request.headers.authorization;
 
         if (tokenId) {
