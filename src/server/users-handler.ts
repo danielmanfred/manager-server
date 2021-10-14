@@ -48,16 +48,19 @@ export class UserHandler extends BaseRequestHandler {
         if (operationAuthorized) {
             const parseUrl = Utils.getUrlParameters(this.request.url);
             if (parseUrl) {
-                const userId = parseUrl.query.id;
-                if (userId) {
-                    const user = await this.usersDBAccess.getUserById(userId as string);
+                const { id, name } = parseUrl.query;
+                if (id) {
+                    const user = await this.usersDBAccess.getUserById(id as string);
                     if (user) {
                         this.respondJsonObject(HTTP_CODES.OK, user);
                     } else {
                         this.handleNotFound();
                     }
+                } else if (name) {
+                    const users = await this.usersDBAccess.getUsersByName(name as string);
+                    this.respondJsonObject(HTTP_CODES.OK, users);
                 } else {
-                    this.respondBadRequest('userId not present in request');
+                    this.respondBadRequest('userId or name are not present in request');
                 }
             }
         } else {

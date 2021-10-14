@@ -11,6 +11,10 @@ GET http://localhost:8080/users?id=123abc
 Authorization: zewlea87sy
 ###
 
+GET http://localhost:8080/users?name=daniel
+Authorization: 1f917kc7mds
+###
+
 PUT http://localhost:8080/users
 Authorization: 6706ssiorg
 Content-Type: application/json
@@ -18,6 +22,6 @@ Content-Type: application/json
 {
     "name": "John Lennon",
     "age": 25,
-    "email": "johnlennon@mail.com",eee
+    "email": "johnlennon@mail.com",
     "workingPosition": 3
 }
