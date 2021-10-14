@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse } from "http";
-import { AccessRight, HTTP_CODES, HTTP_METHODS } from "../shared/model";
+import { AccessRight, HTTP_CODES, HTTP_METHODS, User } from "../shared/model";
 import { UsersDBAccess } from "../user/users-db-access";
 import { BaseRequestHandler } from "./base-request-handler";
 import { TokenValidator } from "./model";
@@ -19,8 +19,27 @@ export class UserHandler extends BaseRequestHandler {
             case HTTP_METHODS.GET:
                 await this.handleGet();
                 break;
+            case HTTP_METHODS.PUT:
+                await this.handlePut();
+                break;
             default:
                 this.handleNotFound();
+        }
+    }
+
+    private async handlePut() {
+        const operationAuthorized = await this.operationAuthorized(AccessRight.CREATE);
+        if (operationAuthorized) {
+            try {
+                const user: User = await this.getRequestBody();
+                await this.usersDBAccess.putUser(user);
+                this.respondeText(HTTP_CODES.CREATED, `user ${user.name} created`);
+            } catch (err) {
+                console.log('This error ACONTECENDO: ', err);
+                this.respondBadRequest('PROBLEMÃO ACONTECENDO');
+            }
+        } else {
+            this.respondUnauthorized(`missing or invalid authentication`);
         }
     }
 

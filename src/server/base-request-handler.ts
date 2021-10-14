@@ -27,6 +27,11 @@ export abstract class BaseRequestHandler {
         this.response.write(message);
     }
 
+    protected respondeText(httpCode: HTTP_CODES, message: string) {
+        this.response.statusCode = HTTP_CODES.UNAUTHORIZED;
+        this.response.write(message);
+    }
+
     protected async getRequestBody(): Promise<any> {
         return new Promise((resolve, reject) => {
             let body = '';
