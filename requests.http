@@ -25,3 +25,7 @@ Content-Type: application/json
     "email": "johnlennon@mail.com",
     "workingPosition": 3
 }
+###
+
+DELETE http://localhost:8080/users?id=f6u3q62sevu
+Authorization: mcna52z8bmm
